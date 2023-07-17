@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# Ask for the commit message
+read -p "Enter commit message: " message
+
+# Check if the commit message is not empty
+if [ -z "$message" ]; then
+  echo "Commit message cannot be empty. Exiting..."
+  exit 1
+fi
+
+# Ask for the files to add
+read -p "Enter the file(s) to add (separate multiple files with space): " files
+
+# Check if the files variable is not empty
+if [ -z "$files" ]; then
+  echo "No files specified. Exiting..."
+  exit 1
+fi
+
+# Execute git commands
+git add $files
+git commit -m "$message"
+git push
