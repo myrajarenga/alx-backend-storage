@@ -4,7 +4,6 @@ script that provides some stats about Nginx logs stored in MongoDB
 """
 
 
-
 import pymongo
 from collections import Counter
 
@@ -16,9 +15,11 @@ def connect_to_mongodb():
     collection = db['nginx']
     return collection
 
+
 def get_log_count(collection):
     """count collection of documents"""
     return collection.count_documents({})
+
 
 def get_method_counts(collection):
     """get method counts"""
@@ -27,6 +28,8 @@ def get_method_counts(collection):
     for method in methods:
         method_counts[method] = collection.count_documents({"method": method})
         return method_counts
+
+
 def get_status_endpoint_count(collection):
     """status of method"""
     return collection.count_documents({"method": "GET", "path": "/status"})
@@ -45,7 +48,8 @@ if __name__ == "__main__":
     status_endpoint_count = get_status_endpoint_count(collection)
 
     # Display the statistics
-    print(f"first line: {total_logs} logs where {total_logs} is the number of documents in this collection")
+    print(f"first line: {total_logs} logs where {total_logs}\
+            is the number of documents in this collection")
     print("second line: Methods:")
     for method, count in method_counts.items():
         print(f"\t{count} logs with method={method}")
