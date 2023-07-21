@@ -27,13 +27,13 @@ class Cache:
         return key
 
     def get(self, key: str, fn: Callable = None)\
-            -> Unioni[str, bytes, int, float]:
+            -> Union[str, bytes, int, float]:
         """retrive data from redis"""
         data = self._redis.get(key)
 
         if data is None or fn is None:
             return data
-        else:
+
             return fn(data)
 
     def get_str(self, key: str) -> str:
