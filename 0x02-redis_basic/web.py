@@ -29,36 +29,3 @@ def get_page(url: str) -> str:
     r.incr(f"count:{url}")
 
     return content
-
-
-"""Test the get_page function
-if __name__ == "__main__":
-    url = "http://slowwly.robertomurray.co.uk/delay/5000/url/http://www.example.com"
-    start_time = time.time()
-    content = get_page(url)
-    end_time = time.time()
-    print("Content:")
-    print(content)
-    print(f"Time taken: {end_time - start_time} seconds")
-
-    time.sleep(2)
-
-    Access the same URL again
-    
-    start_time = time.time()
-    content = get_page(url)
-    end_time = time.time()
-    print("Content (cached):")
-    print(content)
-    print(f"Time taken (cached): {end_time - start_time} seconds")
-
-    Access the same URL again after cache expiratioN
-    
-    time.sleep(8)
-    start_time = time.time()
-    content = get_page(url)
-    end_time = time.time()
-    print("Content (after cache expiration):")
-    print(content)
-    print(f"Time taken (after cache expiration): {end_time - start_time} seconds")
-    """
