@@ -7,6 +7,7 @@ Writing strings to Redis
 import redis
 import uuid
 from typing import Union, Callable
+import functools
 
 
 class Cache:
@@ -43,3 +44,14 @@ class Cache:
     def get_int(self, key: str) -> int:
         """methid to get value as integer"""
         return self.get(key, fn=int)
+
+    def count_calls(self, method: Callable) -> Callable:
+        """define function that waraps args"""
+        @functools.wraps(method)
+        def wrapper(*args, **kwargs):
+            """get name for the method"""
+            method_name = method.__qualified__
+            self._redis.incr(methid_name)
+
+            return method(*args, **kwargs)
+        return wrapper
