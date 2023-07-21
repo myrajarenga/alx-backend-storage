@@ -10,6 +10,18 @@ from typing import Union, Callable, Optional
 from functools import wraps
 
 
+def count_calls(self, method: Callable) -> Callable:
+    @functools.wraps(method)
+    def wrapper(*args, **kwargs):
+        """Get the qualified name of the method"""
+        method_name = method.__qualname__
+        self._redis.incr(method_name)
+
+        return method(*args, **kwargs)
+
+    return wrapper
+
+
 class Cache:
     def __init__(self):
         """sore an instance of redis as private"""
