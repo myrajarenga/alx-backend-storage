@@ -6,8 +6,8 @@ Writing strings to Redis
 
 import redis
 import uuid
-from typing import Union, Callable
-import functools
+from typing import Union, Callable, Optional
+from functools import wraps
 
 
 class Cache:
@@ -27,31 +27,26 @@ class Cache:
 
         return key
 
-    def get(self, key: str, fn: Callable = None)\
+    def get(self, key: str, fn: Optional[callable] = None) \
             -> Union[str, bytes, int, float]:
-        """retrive data from redis"""
-        data = self._redis.get(key)
-
-        if data is None or fn is None:
-            return data
-
-            return fn(data)
+        """convert the data back to the desired format"""
+        value = self._redis.get(key)
+        if fn:
+            value = fn(value)
+        return value
 
     def get_str(self, key: str) -> str:
-        """method to get value as UTF8"""
-        return self.get(key, fn=lambda d: d.decode("utf-8"))
+        """automatically parametrize Cache.get with the correct
+        conversion function"""
+        value = self._redis.get(key)
+        return value.decode("utf-8")
 
     def get_int(self, key: str) -> int:
-        """methid to get value as integer"""
-        return self.get(key, fn=int)
-
-    def count_calls(self, method: Callable) -> Callable:
-        """define function that waraps args"""
-        @functools.wraps(method)
-        def wrapper(*args, **kwargs):
-            """get name for the method"""
-            method_name = method.__qualified__
-            self._redis.incr(methid_name)
-
-            return method(*args, **kwargs)
-        return wrapper
+        """automatically parametrize Cache.get with the correct
+        conversion function"""
+        value = self._redis.get(key)
+        try:
+            value = int(value.decode("utf-8"))
+        except Exception:
+            value = 0
+        return value
