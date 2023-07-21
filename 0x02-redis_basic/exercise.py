@@ -10,15 +10,14 @@ from typing import Union, Callable, Optional
 from functools import wraps
 
 
-def count_calls(self, method: Callable) -> Callable:
-    """return a callable function"""
-    method_name = method.__qualname__
+def count_calls(method: Callable) -> Callable:
+    """returns a Callable"""
+    key = method.__qualname__
 
-    @functools.wraps(method)
-    def wrapper(*args, **kwargs):
-        """get wrapper for decorated function"""
-        self._redis.incr(method_name)
-
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        """wrapper for decorated function"""
+        self._redis.incr(key)
         return method(self, *args, **kwargs)
 
     return wrapper
