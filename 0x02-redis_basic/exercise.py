@@ -17,7 +17,7 @@ class Cache:
         """flush the instance"""
         self._redis.flushdb()
 
-    def store(self, data: Union[str, bytes, int, float] -> str):
+    def store(self, data: Union[str, bytes, int, float]) -> str:
         """generate random key using UUID"""
         key = str(uuid.uuid4())
 
