@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 """
 Writing strings to Redis
+Reading from Redis and recovering original type
+Increamanting values
+Storing lists and finaly
+Retrving lists
 """
 
 
 import redis
-import uuid
+from uuid import uuid4
 from typing import Union, Callable, Optional
 from functools import wraps
 
@@ -27,6 +31,7 @@ def call_history(method: Callable) -> Callable:
     """function to store historry of inputs"""
     @wraps(method)
     def wrapper(self, *args, **kwargs):
+        """warapper decorator func"""
         input = str(args)
         self._redis.rpush(method.__qualname__ + ":inputs", input)
         output = str(method(self, *args, **kwargs))
